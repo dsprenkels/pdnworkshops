@@ -9,7 +9,7 @@ class User(models.Model):
 	naam = models.CharField(max_length=100)
 	email = models.CharField(max_length=100)
 	deleted = models.BooleanField(default=False)
-	date = models.DateField(auto_now_add=True)
+	date = models.DateTimeField(auto_now_add=True)
 
 class WorkshopRating(models.Model):
 	workshop = models.ForeignKey(Workshop)
