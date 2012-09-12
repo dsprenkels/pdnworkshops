@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h1>Inschrijven voor de workshops</h1>
+Geef hieronder je voorkeuren voor de workshops morgenmiddag. Als je een workshop heel graag wil doen geef je hem een vijf, als je iets absoluut niet wil doen geef je het -5. Je kunt ook de cijfers ertussen gebruiken om je voorkeuren tussen de workshops aan te geven.<br>
+We proberen rekening te houden met iedereens voorkeuren, maar om dat perfect te doen is helaas onmogelijk.
+<form method="POST">
+<table>
+	<tr>
+		<td><label for="id_naam">Naam</label></td>
+		<td><input type="text" id="id_naam" name="naam" autocomplete="off" /></td>
+	</tr>
+	<tr>
+		<td><label for="id_email">E-mail</label></td>
+		<td><input type="text" id="id_email" name="email" autocomplete="off" /></td>
+	</tr>
+{% for ws in workshops %}
+	<tr>
+		<td><label for="id_{{ ws.id }}">{{ ws.naam }}</label></td>
+		<td><select id="id_{{ ws.id }}" name="workshop_{{ ws.id }}">
+			<option value="-5">-5</option>
+			<option value="-4">-4</option>
+			<option value="-3">-3</option>
+			<option value="-2">-2</option>
+			<option value="-1">-1</option>
+			<option value="0" selected>0</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select></td>
+	</tr>
+{% endfor %}
+	<tr>
+		<td></td>
+		<td><input type="submit" value="Inschrijven"></td>
+	</tr>
+</table>
+</form>
+{% endblock %}

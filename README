@@ -1,0 +1,21 @@
+Requirements: Python, Django en een database
+
+Ik heb python 2.6.5, django 1.1.1 en sqlite 3.7.4 gebruikt.
+
+Usage:
+1. Zet je environment goed:
+	$ export PYTHONPATH=`pwd`
+	$ export DJANGO_SETTINGS_MODULE=pdn.settings
+	$ cd pdn
+2. Start de django-server
+	$ python manage.py runserver 0:8080
+3. Bereken mogelijke indelingen
+	Als iedereen zich heeft ingeschreven kun je beginnen met het uitrekenen van een goed rooster.
+	Dit programma blijft eeuwig proberen een beter rooster te vinden.
+	$ python workshops/calculate.py
+	Het programma toont het steeds als hij een betere indeling heeft
+4. Toon de beste indeling
+	$ python workshops/print.py indelingen/score.txt
+	Vul als score het hoogste getal wat de vorige stap gaf in.
+
+-- Jille
