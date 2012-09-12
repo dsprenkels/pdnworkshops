@@ -7,14 +7,25 @@ Usage:
 	$ export PYTHONPATH=`pwd`
 	$ export DJANGO_SETTINGS_MODULE=pdn.settings
 	$ cd pdn
-2. Start de django-server
+2. Initializeer dat database
+	$ python manage.py syncdb
+3. Voer de workshops in
+	$ sqlite3 database.sqlite
+	> INSERT INTO workshops_workshop (naam, max) VALUES ('Vuurspuwen', 16);
+4. Start de django-server
 	$ python manage.py runserver 0:8080
-3. Bereken mogelijke indelingen
+5. Gooi alle loze en dubbele inschrijvingen weg
+	$ sqlite3 database.sqlite
+	> SELECT * FROM workshops_user WHERE email IN (SELECT email FROM workshops_user WHERE deleted=0 GROUP BY email HAVING COUNT(*) > 1) AND deleted=0;
+	> SELECT * FROM workshops_user WHERE naam IN (SELECT naam FROM workshops_user WHERE deleted=0 GROUP BY naam HAVING COUNT(*) > 1) AND deleted=0;
+	> SELECT * FROM workshops_user;
+	> UPDATE workshops_user SET deleted=1 WHERE id IN (123);
+6. Bereken mogelijke indelingen
 	Als iedereen zich heeft ingeschreven kun je beginnen met het uitrekenen van een goed rooster.
 	Dit programma blijft eeuwig proberen een beter rooster te vinden.
 	$ python workshops/calculate.py
 	Het programma toont het steeds als hij een betere indeling heeft
-4. Toon de beste indeling
+7. Toon de beste indeling
 	$ python workshops/print.py indelingen/score.txt
 	Vul als score het hoogste getal wat de vorige stap gaf in.
 
