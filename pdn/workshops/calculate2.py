@@ -1,7 +1,4 @@
-from random import shuffle
-import json
-import threading
-import sys
+import _import
 
 from pdn.workshops.models import Workshop, User, WorkshopRating
 
