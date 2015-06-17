@@ -1,9 +1,13 @@
+import os
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pdn.settings")
+import django
+django.setup()
+
 from random import shuffle
 import json
 import threading
 import sys
-
-import _import
 
 from pdn.workshops.models import Workshop, User, WorkshopRating
 

@@ -1,8 +1,7 @@
 import os
-import _import
 import textwrap
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'pdn.pdn.settings'
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pdn.settings")
 import django
 django.setup()
 
