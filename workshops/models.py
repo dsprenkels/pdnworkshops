@@ -2,16 +2,17 @@ from django.db import models
 
 # Create your models here.
 class Workshop(models.Model):
-	naam = models.CharField(max_length=64, unique=True)
-	max = models.IntegerField()
+    naam = models.CharField(max_length=64, unique=True)
+    max = models.IntegerField()
+    # min = models.IntegerField(default=0)
 
 class User(models.Model):
-	naam = models.CharField(max_length=100)
-	email = models.CharField(max_length=100, blank=True)
-	deleted = models.BooleanField(default=False)
-	date = models.DateTimeField(auto_now_add=True)
+    naam = models.CharField(max_length=100)
+    email = models.CharField(max_length=100, blank=True)
+    deleted = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
 
 class WorkshopRating(models.Model):
-	workshop = models.ForeignKey(Workshop)
-	user = models.ForeignKey(User)
-	rating = models.IntegerField()
+    workshop = models.ForeignKey(Workshop)
+    user = models.ForeignKey(User)
+    rating = models.IntegerField()
