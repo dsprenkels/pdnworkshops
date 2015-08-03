@@ -10,7 +10,7 @@ class Workshop(models.Model):
         return self.naam
 
 class User(models.Model):
-    naam = models.CharField(max_length=100)
+    naam = models.CharField(max_length=100, unique=True)
     email = models.CharField(max_length=100, blank=True)
     deleted = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)

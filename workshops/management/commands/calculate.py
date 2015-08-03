@@ -13,8 +13,16 @@ verbeterde versie van `calculate2.py`, geschreven door Bas Westerbaan.
 
 ROUNDS = ['1', '2']
 
+DEFAULT_OUTPUT_FILE = 'model.sol'
+
 MODEL = r'''
 # vim: set ft=ampl:
+
+# This model calculates the optimal distibution of participants ("users")
+# in workshops. It outputs the solution to solution.csv and displays the
+# maximized score.
+# Note that removing some workshops (if you have enough space) may improve
+# the total score, and you should experiment with this this.
 
 set rounds;
 
@@ -22,8 +30,8 @@ set users;
 
 set workshops;
 
-param max{workshops};
-param min{workshops};
+param max{workshops, rounds};
+param min{workshops, rounds};
 
 param profit{users,workshops};
 
@@ -42,7 +50,7 @@ card(rounds) <= sum{j in workshops, r in rounds} x[i,j,r] <= card(rounds);
 
 # Each participant should be assigned exactly one workshop per round
 subject to round_constraint{i in users, r in rounds}:
-1 <= sum{j in workshops} x[i,j,r] <= 1;
+sum{j in workshops} x[i,j,r] = 1;
 
 # Each participant may do a workshop only once
 subject to round_constraint2{i in users, j in workshops}:
@@ -50,55 +58,70 @@ sum{r in rounds} x[i,j,r] <= 1;
 
 # The amount of participants for is limited per workshop
 subject to workshops_max_constraint{j in workshops, r in rounds}:
-sum{i in users} x[i,j,r] <= max[j];
+sum{i in users} x[i,j,r] <= max[j,r];
 
 # The amount of participants must be at least some amount per workshop
 subject to workshops_min_constraint{j in workshops, r in rounds}:
-sum{i in users} x[i,j,r] >= min[j];
+sum{i in users} x[i,j,r] >= min[j,r];
 
 solve;
 
+# output the distribution
+printf "Deelnemer, Ronde, Workshop, Score\n" > "solution.csv";
+for {i in users, r in rounds, j in workshops: x[i,j,r] = 1} {
+    printf "%s, %s, %s, %d\n", i, r, j, profit[i,j] >> "solution.csv";
+}
+
 display totalprofit;
-'''.strip()
+'''.lstrip()
 
 class Command(BaseCommand):
     """
-    The `calculate` command reads the database and writes to `model.sol` in the
-    current working directory. This command receives no arguments at all.
+    The `calculate` command reads the database and writes to the output file
+    provided on the command line.
 
-    The calculation can be done using gplsol:
+    After generating the model, the calculation can be done using gplsol:
 
     ```shell
-    glpsol -m model.sol -o solution.txt
+    glpsol -m $MODEL_FILE -o solution.txt
     ```
     """
-    can_import_settings = True
+
+    help = 'Generate a glpsol model from the database'
 
     @staticmethod
     def _prepare_name(s):
         return "'%s'" % re.sub("[^A-Za-z ]","", s)
 
+    @staticmethod
+    def add_arguments(parser):
+        parser.add_argument('-o', '--output', default=DEFAULT_OUTPUT_FILE,
+            help='the file the glpsol model will be written to;'
+            ' defaults to %s' % DEFAULT_OUTPUT_FILE)
+
     def handle(self, *args, **options):
+        # check the app for problems
+        self.check(['workshops'])
+
         # load workshops
-        workshops = dict()
+        workshops = {}
         for ws in Workshop.objects.filter():
-            # TODO: implement min
-        	workshops["workshop%d" % ws.id] = {"min": 0, "max": ws.max}
+            workshops[self._prepare_name(ws.naam)] = {"min": 0, "max": ws.max}
 
         # load users
-        users = list()
+        users = []
         db_users = []
         for user in User.objects.filter(deleted=False):
             db_users.append(user.id)
             users.append(self._prepare_name(user.naam))
         
         # load user preferences
-        prefs = dict()
+        prefs = {}
         for rating in WorkshopRating.objects.filter(user__in=db_users):
-            prefs[self._prepare_name(rating.user.naam), 'workshop'
-                            +str(rating.workshop_id)] = rating.rating
+            prefs[self._prepare_name(rating.user.naam),
+                self._prepare_name(rating.workshop.naam)] = rating.rating
 
-        with open('model.sol', 'w') as f:
+        with open(options['output'], 'w') as f:
             # write model section
             f.write("%s\n" % MODEL)
 
@@ -115,10 +138,21 @@ class Command(BaseCommand):
             f.write(" ".join(workshops))
             f.write(";\n")
             
-            f.write("param : min max :=\n")
-            for k, v in workshops.items():
-                f.write("%s %d %d\n" % (k, v['min'], v['max']))
-            f.write("\n;")
+            f.write("param min : ")
+            f.write(' '.join(ROUNDS))
+            f.write(' :=\n')
+            for workshop, v in workshops.items():
+                f.write("%s %s\n" %
+                    (workshop, " ".join(str(x) for x in [v['min']]*len(ROUNDS))))
+            f.write(";\n");
+
+            f.write("param max : ")
+            f.write(' '.join(ROUNDS))
+            f.write(' :=\n')
+            for workshop, v in workshops.items():
+                f.write("%s %s\n" %
+                    (workshop, " ".join(str(x) for x in [v['max']]*len(ROUNDS))))
+            f.write(";\n");
 
             f.write("param profit : ")
             f.write(' '.join(workshops))
@@ -128,5 +162,7 @@ class Command(BaseCommand):
                 for w in workshops:
                     f.write("%d " % prefs[u, w])
                 f.write("\n")
-            f.write("\n;");
+            f.write(";\n");
+
+            f.write("end;\n")
 
