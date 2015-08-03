@@ -14,13 +14,13 @@ verbeterde versie van `calculate2.py`, geschreven door Bas Westerbaan.
 ROUNDS = ['1', '2']
 
 MODEL = r'''
+# vim: set ft=ampl:
+
 set rounds;
 
 set users;
 
 set workshops;
-
-# in this math model we do not set slots
 
 param max{workshops};
 param min{workshops};
@@ -62,6 +62,16 @@ display totalprofit;
 '''.strip()
 
 class Command(BaseCommand):
+    """
+    The `calculate` command reads the database and writes to `model.sol` in the
+    current working directory. This command receives no arguments at all.
+
+    The calculation can be done using gplsol:
+
+    ```shell
+    glpsol -m model.sol -o solution.txt
+    ```
+    """
     can_import_settings = True
 
     @staticmethod
@@ -88,7 +98,7 @@ class Command(BaseCommand):
             prefs[self._prepare_name(rating.user.naam), 'workshop'
                             +str(rating.workshop_id)] = rating.rating
 
-        with open('out.sol', 'w') as f:
+        with open('model.sol', 'w') as f:
             # write model section
             f.write("%s\n" % MODEL)
 
