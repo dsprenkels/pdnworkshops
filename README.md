@@ -22,15 +22,22 @@ python manage.py createsuperuser  # create an admin user
 
 ## using the program
 
-> At the moment, some settings are hardcoded into the model generation file `pdnworkshops/management/commands/calculate.py`. I reccommend reading it, before proceeding.
+> At the moment, some settings are hardcoded into the model generation file
+> `pdnworkshops/management/commands/calculate.py`. I reccommend reading it,
+> before proceeding.
 
 ```shell
 python manage.py runserver        # start the server
 ```
 
-When your server is running, go to the admin panel (`http://localhost:8000/admin/`) and log in. You can now start adding workshops. When you are done adding workshops, your participants can start entering their preferences at `http://localhost:8000/`. Entered mistakes can easily be corrected using the admin panel.
+When your server is running, go to the admin panel
+(`http://localhost:8000/admin/`) and log in. You can now start adding
+workshops. When you are done adding workshops, your participants can start
+entering their preferences at `http://localhost:8000/`. Entered mistakes can
+easily be corrected using the admin panel.
 
-When all preferences are entered, stop the server and go throught the following steps to get your solution.
+When all preferences are entered, stop the server and go throught the following
+steps to get your solution.
 
 ```shell
 # generate model.sol
@@ -49,11 +56,20 @@ libreoffice solution.csv
 
 ## additional rules
 
-You may want to add additional rules. An example (safety feature) is the rule we use to make sure the a participant cannot do `Vuurspuwen` after having done `Bierproeven`. It goes like this:
+You may want to add additional rules. Below are some examples.
 
 ```ampl
+# make sure nobody can do 'Vuurspuwen' in round 2 when they have drunk alcohol
+# in round 1
 subject to safety_first_contraint1{i in users}:
-  x[i,'Bierproeven',1] + x[i,'Vuurspuwen',2] <= 1;
+x[i,'Pils proeven',1] + x[i,'Vuurspuwen',2] <= 1;
+
+# 'Nicole' is seventeen years old, so make sure she can't join the
+# 'Pils proeven' (beer tasting) workshop
+subject to alcohol_constraint1{r in rounds}:
+x['Nicole','Pils proeven',r] = 0;
+
 ```
 
-Add this to `model.sol` before calling `glpsol` to add this rule to the model.
+Add rules like these to `model.sol` before calling `glpsol` to add this rule
+to the model.
