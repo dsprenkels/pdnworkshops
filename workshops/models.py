@@ -3,8 +3,9 @@ from django.db import models
 # Create your models here.
 class Workshop(models.Model):
     naam = models.CharField(max_length=64, unique=True)
+    min = models.IntegerField(default=0)
     max = models.IntegerField()
-    # min = models.IntegerField(default=0)
+    hidden = models.BooleanField(default=False)
 
     def __str__(self):
         return self.naam
@@ -21,4 +22,4 @@ class User(models.Model):
 class WorkshopRating(models.Model):
     workshop = models.ForeignKey(Workshop)
     user = models.ForeignKey(User)
-    rating = models.IntegerField()
+    rating = models.IntegerField(default=0)

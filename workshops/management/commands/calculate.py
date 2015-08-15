@@ -11,7 +11,7 @@ hier ook `geheeltallig lineair programmeren'. Deze versie is een
 verbeterde versie van `calculate2.py`, geschreven door Bas Westerbaan.
 """
 
-ROUNDS = ['1', '2']
+ROUNDS = ['1', '2', '3']
 
 DEFAULT_OUTPUT_FILE = 'model.sol'
 
@@ -106,7 +106,7 @@ class Command(BaseCommand):
         # load workshops
         workshops = {}
         for ws in Workshop.objects.filter():
-            workshops[self._prepare_name(ws.naam)] = {"min": 0, "max": ws.max}
+            workshops[self._prepare_name(ws.naam)] = {"min": ws.min, "max": ws.max}
 
         # load users
         users = []
@@ -114,7 +114,7 @@ class Command(BaseCommand):
         for user in User.objects.filter(deleted=False):
             db_users.append(user.id)
             users.append(self._prepare_name(user.naam))
-        
+
         # load user preferences
         prefs = {}
         for rating in WorkshopRating.objects.filter(user__in=db_users):
@@ -137,7 +137,7 @@ class Command(BaseCommand):
             f.write("set workshops :=\n")
             f.write(" ".join(workshops))
             f.write(";\n")
-            
+
             f.write("param min : ")
             f.write(' '.join(ROUNDS))
             f.write(' :=\n')
@@ -165,4 +165,3 @@ class Command(BaseCommand):
             f.write(";\n");
 
             f.write("end;\n")
-

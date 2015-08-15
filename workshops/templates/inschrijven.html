@@ -16,7 +16,7 @@ We proberen rekening te houden met iedereens voorkeuren, maar om dat perfect te 
 		<td><input type="text" id="id_email" name="email" autocomplete="off" /></td>
 	</tr>
 {% for ws in workshops %}
-	<tr>
+	<tr{% if ws.hidden %} style="display: none;"{% endif %}>
 		<td><label for="id_{{ ws.id }}">{{ ws.naam }}</label></td>
 		<td><select id="id_{{ ws.id }}" name="workshop_{{ ws.id }}">
 			<option value="-5">-5</option>
