@@ -46,7 +46,7 @@ maximize totalprofit:
 # Each participant should be assigned to a workshop exactly as
 # there are number of rounds.
 subject to users_constraint{i in users}:
-card(rounds) <= sum{j in workshops, r in rounds} x[i,j,r] <= card(rounds);
+sum{j in workshops, r in rounds} x[i,j,r] = card(rounds);
 
 # Each participant should be assigned exactly one workshop per round
 subject to round_constraint{i in users, r in rounds}:
