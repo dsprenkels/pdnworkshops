@@ -37,7 +37,7 @@ python manage.py runserver        # start the server
 
 When your server is running, go to the admin panel (`http://localhost:8000/admin/`) and log in. You can now start adding workshops. When you are done adding workshops, your participants can start entering their preferences at `http://localhost:8000/`. Entered mistakes can easily be corrected using the admin panel.
 
-When all preferences are entered, stop the server and go throught the following steps to get your solution.
+When all preferences are entered, stop the server and go through the following steps to get your solution.
 
 ```shell
 # generate model.sol
