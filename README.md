@@ -13,7 +13,7 @@ sudo apt-get install glpk-utils
 
 # create a virtualenv and install django 1.8
 virtualenv pdn_virtualenv
-source "pdn_virtualenv/bin/activate"
+source pdn_virtualenv/bin/activate
 pip install --upgrade django==1.8
 ```
 
@@ -59,15 +59,15 @@ libreoffice solution.csv
 You may want to add additional rules. Below are some examples.
 
 ```ampl
-# make sure nobody can do 'Vuurspuwen' in round 2 when they have drunk alcohol
+# make sure nobody can do 'Fire breath' in round 2 when they have drunk alcohol
 # in round 1
-subject to safety_first_contraint1{i in users}:
-x[i,'Pils proeven',1] + x[i,'Vuurspuwen',2] <= 1;
+subject to safety_contraint1{i in users}:
+x[i,'Beer tasting',1] + x[i,'Fire breath',2] <= 1;
 
 # 'Nicole' is seventeen years old, so make sure she can't join the
-# 'Pils proeven' (beer tasting) workshop
+# 'Beer tasting' workshop
 subject to alcohol_constraint1{r in rounds}:
-x['Nicole','Pils proeven',r] = 0;
+x['Nicole','Beer tasting',r] = 0;
 
 ```
 
