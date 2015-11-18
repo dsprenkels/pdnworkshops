@@ -4,5 +4,5 @@ before_install:
   - sudo apt-get install -y glpk-utils
 python:
   - "2.7"
-install: pip install --upgrade django==1.8
+install: pip install django==1.8
 script: python manage.py test
