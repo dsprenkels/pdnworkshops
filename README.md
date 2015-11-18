@@ -41,7 +41,7 @@ steps to get your solution.
 
 ```shell
 # generate model.sol
-python manage.py calculates
+python manage.py calculate
 
 # optionally edit the model by hand
 $EDITOR model.sol
