@@ -10,7 +10,7 @@ class UsageTest(TestCase):
 
     def test_model(self):
         management.call_command('calculate')
-        self.assertEqual(md5('model.sol'), '853c3aceb520de63cda8f67a28ffe75c')
+        self.assertEqual(md5('model.sol'), 'df42faad118bf5f993922ca3ea3ebac7')
 
     def test_solution(self):
         management.call_command('calculate')

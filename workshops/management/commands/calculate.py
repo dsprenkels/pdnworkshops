@@ -39,37 +39,37 @@ param profit{users,workshops};
 var x{users,workshops,rounds} binary;
 
 maximize totalprofit:
-    sum{i in users, j in workshops, r in rounds}
-        profit[i,j]*x[i,j,r];
+    sum{u in users, w in workshops, r in rounds}
+        profit[u,w]*x[u,w,r];
 
 
 # Each participant should be assigned to a workshop exactly as
 # there are number of rounds.
-subject to users_constraint{i in users}:
-sum{j in workshops, r in rounds} x[i,j,r] = card(rounds);
+subject to users_constraint{u in users}:
+sum{w in workshops, r in rounds} x[u,w,r] = card(rounds);
 
 # Each participant should be assigned exactly one workshop per round
-subject to round_constraint{i in users, r in rounds}:
-sum{j in workshops} x[i,j,r] = 1;
+subject to round_constraint{u in users, r in rounds}:
+sum{w in workshops} x[u,w,r] = 1;
 
 # Each participant may do a workshop only once
-subject to round_constraint2{i in users, j in workshops}:
-sum{r in rounds} x[i,j,r] <= 1;
+subject to round_constraint2{u in users, w in workshops}:
+sum{r in rounds} x[u,w,r] <= 1;
 
 # The amount of participants for is limited per workshop
-subject to workshops_max_constraint{j in workshops, r in rounds}:
-sum{i in users} x[i,j,r] <= max[j,r];
+subject to workshops_max_constraint{w in workshops, r in rounds}:
+sum{u in users} x[u,w,r] <= max[w,r];
 
 # The amount of participants must be at least some amount per workshop
-subject to workshops_min_constraint{j in workshops, r in rounds}:
-sum{i in users} x[i,j,r] >= min[j,r];
+subject to workshops_min_constraint{w in workshops, r in rounds}:
+sum{u in users} x[u,w,r] >= min[w,r];
 
 solve;
 
 # output the distribution
 printf "Deelnemer, Ronde, Workshop, Score\n" > "solution.csv";
-for {i in users, r in rounds, j in workshops: x[i,j,r] = 1} {
-    printf "%s, %s, %s, %d\n", i, r, j, profit[i,j] >> "solution.csv";
+for {u in users, r in rounds, w in workshops: x[u,w,r] = 1} {
+    printf "%s, %s, %s, %d\n", u, r, w, profit[u,w] >> "solution.csv";
 }
 
 display totalprofit;
