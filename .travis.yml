@@ -5,5 +5,9 @@ addons:
     - glpk-utils
 python:
   - "2.7"
+  - "3.2"
+  - "3.3"
+  - "3.4"
+  - "3.5"
 install: pip install django==1.8
 script: python manage.py test

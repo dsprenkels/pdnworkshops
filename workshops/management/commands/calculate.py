@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import os
 import re
 
@@ -104,7 +105,7 @@ class Command(BaseCommand):
         self.check(['workshops'])
 
         # load workshops
-        workshops = {}
+        workshops = OrderedDict()
         for ws in Workshop.objects.filter():
             workshops[self._prepare_name(ws.naam)] = {"min": ws.min, "max": ws.max}
 
@@ -116,7 +117,7 @@ class Command(BaseCommand):
             users.append(self._prepare_name(user.naam))
 
         # load user preferences
-        prefs = {}
+        prefs = OrderedDict()
         for rating in WorkshopRating.objects.filter(user__in=db_users):
             prefs[self._prepare_name(rating.user.naam),
                 self._prepare_name(rating.workshop.naam)] = rating.rating
