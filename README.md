@@ -61,8 +61,8 @@ You may want to add additional rules. Below are some examples.
 ```ampl
 # make sure nobody can do 'Fire breath' in round 2 when they have drunk alcohol
 # in round 1
-subject to safety_contraint1{i in users}:
-x[i,'Beer tasting',1] + x[i,'Fire breath',2] <= 1;
+subject to safety_contraint1{u in users}:
+x[u,'Beer tasting',1] + x[u,'Fire breath',2] <= 1;
 
 # 'Nicole' is seventeen years old, so make sure she can't join the
 # 'Beer tasting' workshop
