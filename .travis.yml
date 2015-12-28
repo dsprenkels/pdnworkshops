@@ -9,5 +9,6 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
+  - "pypy"
 install: pip install django==1.8
 script: python manage.py test
