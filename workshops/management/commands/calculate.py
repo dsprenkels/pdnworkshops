@@ -12,7 +12,7 @@ hier ook `geheeltallig lineair programmeren'. Deze versie is een
 verbeterde versie van `calculate2.py`, geschreven door Bas Westerbaan.
 """
 
-ROUNDS = ['1', '2', '3']
+ROUNDS = ['1', '2']
 
 DEFAULT_OUTPUT_FILE = 'model.sol'
 
