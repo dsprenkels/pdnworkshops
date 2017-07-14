@@ -1,6 +1,6 @@
 # pdnworkshops
 
-`pdnworkshops` is a program made by [Radboud University's] [ru] / [Karpe Noktem's] [kn] weekend organising group _Pluk de Nacht_. It is used to determine the optimal distribution of a group of participants into different workshops, based on their preferences. This project is put on Github mainly for demonstrational purposes. It is not intended to be safe, so don't use it if you intend to expose it to the web.
+`pdnworkshops` is a program made by [Radboud University's][ru] / [Karpe Noktem's][kn] weekend organising group _Pluk de Nacht_. It is used to determine the optimal distribution of a group of participants into different workshops, based on their preferences. This project is put on Github mainly for demonstrational purposes. It is not intended to be safe, so don't use it if you intend to expose it to the web.
 
 [ru]: http://www.ru.nl/introductie/
 [kn]: https://karpenoktem.nl/
