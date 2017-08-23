@@ -23,7 +23,7 @@ MODEL = r'''
 # in workshops. It outputs the solution to solution.csv and displays the
 # maximized score.
 # Note that removing some workshops (if you have enough space) may improve
-# the total score, and you should experiment with this this.
+# the total score, and you should experiment with this.
 
 set rounds;
 
@@ -36,7 +36,7 @@ param min{workshops, rounds};
 
 param profit{users,workshops};
 
-# the schedule to be calculated
+# The schedule to be calculated
 var x{users,workshops,rounds} binary;
 
 maximize totalprofit:
@@ -67,8 +67,8 @@ sum{u in users} x[u,w,r] >= min[w,r];
 
 solve;
 
-# output the distribution
-printf "Deelnemer, Ronde, Workshop, Score\n" > "solution.csv";
+# Output the distribution
+printf "Participant, Round, Workshop, Score\n" > "solution.csv";
 for {u in users, r in rounds, w in workshops: x[u,w,r] = 1} {
     printf "%s, %s, %s, %d\n", u, r, w, profit[u,w] >> "solution.csv";
 }
