@@ -1,11 +1,27 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>Pluk de Nacht - workshops</title>
+		<title>Pluk de Nacht &ndash; workshops</title>
 		<link href="{{ MEDIA_URL }}style.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript">
 			{% block javascript %}{% endblock %}
 		</script>
+		<style>
+body {
+	font-family: "Droid Sans", "Open Sans", sans-serif;
+	color: #111;
+	max-width: 900px;
+	margin: 0 auto;
+}
+
+table {
+	margin: 0.75em 0;
+}
+
+td {
+	padding: 1px 2em;
+}
+		</style>
 		{% block head %}{% endblock %}
 	</head>
 	<body{% block bodyattrs %}{% endblock %}>

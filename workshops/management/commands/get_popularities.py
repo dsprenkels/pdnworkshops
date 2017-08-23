@@ -20,10 +20,10 @@ class Command(BaseCommand):
         for user in User.objects.filter(deleted=False):
             db_users.append(user.id)
             users.append(user.naam)
-        
+
         # load user preferences
         prefs = dict()
-        for rating in WorkshopRating.objects.filter(user__in=db_users, rating__gte=5):
+        for rating in WorkshopRating.objects.filter(user__in=db_users, rating__gte=4):
             workshops[rating.workshop.naam]['popularity'] += rating.rating
             workshops[rating.workshop.naam]['users'] += 1
 

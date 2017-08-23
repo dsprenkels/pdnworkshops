@@ -92,7 +92,7 @@ class Command(BaseCommand):
 
     @staticmethod
     def _prepare_name(s):
-        return "'%s'" % re.sub("[^A-Za-z ]","", s)
+        return "'%s'" % re.sub("[^A-Za-z0-9 ]","", s)
 
     @staticmethod
     def add_arguments(parser):

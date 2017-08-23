@@ -2,9 +2,13 @@
 
 {% block body %}
 <h1>Inschrijven voor de workshops</h1>
-Geef hieronder je voorkeuren voor de workshops morgenmiddag. Als je een workshop heel graag wil doen geef je hem een vijf, als je iets absoluut niet wil doen geef je het -5. Je kunt ook de cijfers ertussen gebruiken om je voorkeuren tussen de workshops aan te geven.<br>
-We proberen rekening te houden met iedereens voorkeuren, maar om dat perfect te doen is helaas onmogelijk.
-<form method="POST">
+<p>
+	Geef hieronder je voorkeuren voor de workshops morgenmiddag. Als je een workshop heel graag wil doen shuif je dat ding naar rechts (5). Als je iets absoluut niet wil doen schuif je hem naar links (-5). Je kunt hem ook ergens in het midden duwen als het je minder kan schelen.
+</p>
+<p>
+	We proberen rekening te houden met iedereens voorkeuren, maar om dat perfect te doen is helaas niet zo gemakkelijk.
+</p>
+<form method="post">
 {% csrf_token %}
 <table>
 	<tr>
@@ -13,24 +17,16 @@ We proberen rekening te houden met iedereens voorkeuren, maar om dat perfect te 
 	</tr>
 	<tr>
 		<td><label for="id_email">E-mail</label></td>
-		<td><input type="text" id="id_email" name="email" autocomplete="off" /></td>
+		<td><input type="text" id="id_email" name="email" autocomplete="off" /> <small>(dit hoef je niet per se in te vullen; we gebruiken o.a. om achteraf de foto's naar te versturen.)</small></td>
 	</tr>
 {% for ws in workshops %}
 	<tr{% if ws.hidden %} style="display: none;"{% endif %}>
 		<td><label for="id_{{ ws.id }}">{{ ws.naam }}</label></td>
-		<td><select id="id_{{ ws.id }}" name="workshop_{{ ws.id }}">
-			<option value="-5">-5</option>
-			<option value="-4">-4</option>
-			<option value="-3">-3</option>
-			<option value="-2">-2</option>
-			<option value="-1">-1</option>
-			<option value="0" selected>0</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-		</select></td>
+		<td>
+			lame!
+			<input id="id_{{ ws.id }}" name="workshop_{{ ws.id }}" type="range" value="0" min="-5" max="5" />
+			gaaf!
+		</td>
 	</tr>
 {% endfor %}
 	<tr>
